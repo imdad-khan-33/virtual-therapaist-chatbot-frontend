@@ -27,16 +27,19 @@ const Register = () => {
       setUserEmail(data.email);
       setOtpSent(true);
       notifyToast("OTP sent to your email!", "success");
+      return true;
     } catch (error) {
       const errorMessage = error?.data?.message || "Failed to send OTP. Please try again.";
       notifyToast(errorMessage, "error");
+      return false;
     }
   };
 
   const onSubmit = async (data) => {
     if (!otpSent) {
       // First step: Send OTP
-      await handleSendOtp(data);
+      const otpSendSuccess = await handleSendOtp(data);
+      if (!otpSendSuccess) return; // Stop if OTP sending failed
     } else {
       // Second step: Register with OTP
       try {
