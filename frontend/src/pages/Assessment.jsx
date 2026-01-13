@@ -106,7 +106,21 @@ const Questionnaire = () => {
         <CustomLoader />
       </div>
     );
-  if (error) return <div className="text-center">Error loading questions</div>;
+  if (error) {
+    console.error("Assessment loading error:", error);
+    return (
+      <div className="text-center p-6">
+        <p className="text-red-600 font-semibold mb-2">Error loading questions</p>
+        <p className="text-gray-600 text-sm mb-4">{error?.data?.message || error?.message || "Unknown error"}</p>
+        <button
+          className="bg-customBg text-white px-4 py-2 rounded"
+          onClick={() => window.location.reload()}
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
 
   // When no questions are available
   if (!questions || questions.length === 0 || currentQuestion === null) {
